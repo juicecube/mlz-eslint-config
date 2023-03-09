@@ -9,10 +9,9 @@ eslint 统一规范配置，集成了 [eslint-plugin-import](https://github.com/
 
 ## Usage
 
-- typescript：在项目根目录新建 `tsconfig.json` 文件，并写入下面👇代码
+- 在项目根目录新建 `tsconfig.json` 文件，并写入下面👇代码
 
 ```js
-// tsconfig.json
 {
   "extends": "@mlz/eslint-config/tsconfig.json",
   "compilerOptions": {
