@@ -21,7 +21,7 @@ eslint 统一规范配置，集成了 [eslint-plugin-import](https://github.com/
 }
 ```
 
-- eslint && react ：在项目根目录新建 `.eslintrc.json` 文件，并加入下面👇代码
+- React 项目在根目录新建 `.eslintrc.json` 文件，并加入下面👇代码
 
 ```js
 {
@@ -29,7 +29,7 @@ eslint 统一规范配置，集成了 [eslint-plugin-import](https://github.com/
 }
 ```
 
-- eslint：在项目根目录新建 `.eslintrc.json` 文件，并加入下面👇代码
+- 单纯 TypeScript 项目在根目录新建 `.eslintrc.json` 文件，并加入下面👇代码
 
 ```js
 {
