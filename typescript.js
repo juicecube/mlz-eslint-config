@@ -1,0 +1,164 @@
+/**
+ * https://eslint.org/
+ * https://zh-hans.eslint.org/
+ * 规则中第一个参数可以用字符串也可以用数字，例如： "eol-last": ["error", "always"]  或者  "eol-last": [2, "always"]
+ * "off" or 0 - 关闭规则
+ * "warn" or 1 - 将规则视为一个警告（不会影响退出码）
+ * "error" or 2 - 将规则视为一个错误 (退出码为1)
+ */
+module.exports = {
+  env: {
+    browser: true,
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:promise/recommended',
+    'plugin:import/recommended',
+    'plugin:prettier/recommended',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+  },
+  plugins: ['@typescript-eslint'],
+  /**
+   * typescript规则
+   * 注释中以‘CUSTOM’结尾的规则为可自定义规则（具体项目可自行调整）
+   * 其余注释各业务方请不要随意配置，以规范为准
+   * 以@typescript-eslint开头的规则由@typescript-eslint插件提供，用于检测ts
+   *
+   */
+  rules: {
+    // ============命名=============
+    camelcase: 'off',
+    '@typescript-eslint/naming-convention': [
+      2,
+      {
+        selector: 'property',
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE', 'snake_case'],
+        leadingUnderscore: 'allow',
+      }, // 强制使用驼峰、帕斯卡、常量大写命名  --CUSTOM
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+      },
+      {
+        selector: 'typeAlias',
+        format: ['PascalCase'],
+      },
+      {
+        selector: 'class',
+        format: ['PascalCase'],
+      }, // class和interface采用帕斯卡命名(不允许下划线)
+    ],
+
+    // ============空格 && 缩进=============
+    'eol-last': [1, 'always'], // 要求或禁止文件末尾存在空行
+    'func-call-spacing': [2, 'never'], // 要求或禁止在函数标识符和其调用之间有空格
+    'template-tag-spacing': [2, 'always'], // 要求或禁止在模板标记和它们的字面量之间有空格
+    'spaced-comment': [
+      // 要求或禁止在注释前有空白
+      2,
+      'always',
+      {
+        line: {
+          markers: ['/'],
+          exceptions: ['-', '+'],
+        },
+        block: {
+          markers: ['!'],
+          exceptions: ['*'],
+          balanced: true,
+        },
+      },
+    ],
+    'space-infix-ops': 2, // 要求中缀操作符周围有空格
+    'comma-spacing': [2, { after: true }], // 强制在逗号前后使用一致的空格
+    'no-trailing-spaces': 2, // 禁用行尾空格
+    'space-before-function-paren': [
+      // 要求或禁止函数圆括号之前有一个空格
+      2,
+      {
+        anonymous: 'always',
+        named: 'never',
+        asyncArrow: 'always',
+      },
+    ],
+    'no-multi-spaces': 2, // 禁止使用多个空格
+    'object-curly-spacing': [2, 'always'], // 对象大括号旁必须有空格
+    '@typescript-eslint/type-annotation-spacing': 0, // 声明类型时必须无空格，与prettier冲突，关闭  --CUSTOM
+    'no-unexpected-multiline': 2, // 禁止不期待的多行写法
+    'operator-linebreak': [2, 'after', { overrides: { '?': 'before', ':': 'before' } }], // 过长需换行时操作符的位置  --CUSTOM
+
+    // ============符号相关=============
+    'comma-style': [2, 'last'], // 逗号规则
+    'comma-dangle': [
+      // 行末尾必须有逗号
+      2,
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'never',
+        functions: 'never',
+      },
+    ],
+    quotes: [2, 'single'], // 字符串必须使用单引号
+    eqeqeq: [2, 'smart'], // 强制使用三等，除了对比null/undefined  --CUSTOM
+    'no-extra-parens': 0, // 禁止不必要的括号 (as any写法会被误判)
+
+    // ============箭头函数相关=============
+    'arrow-parens': 2, // 要求箭头函数的参数使用圆括号
+    'arrow-spacing': [2, { before: true, after: true }],
+    'arrow-body-style': [2, 'as-needed'], // 要求箭头函数体使用大括号
+
+    // ============其他=============
+    'prefer-const': 2, // 要求使用 const 声明那些声明后不再被修改的变量
+    'one-var-declaration-per-line': 2, // 禁止一次性定义多个变量
+    'key-spacing': [2, { afterColon: true }], // object的key的“:”之后至少有一个空格
+    'no-inner-declarations': 1, // 禁止在嵌套的块中出现变量声明或 function 声明  --CUSTOM
+    'require-atomic-updates': 1, // 禁止由于 await 或 yield的使用而可能导致出现竞态条件的赋值  --CUSTOM
+    'no-case-declarations': 1, // 不允许在 case 子句中使用词法声明  --CUSTOM
+    'prefer-rest-params': 0, // 要求使用剩余参数而不是 arguments  --CUSTOM
+    'prefer-template': 1, // 要求使用模板字面量而非字符串连接  --CUSTOM
+    'no-undef': 0, // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到 （原因：全局变量较常用，定义在global.d.ts中即可）
+    'no-constant-condition': 0, // 禁止在条件中使用常量表达式
+    'prefer-spread': 0, // 要求使用扩展运算符而非 .apply()
+    'no-useless-escape': 0, // 禁用不必要的转义字符 (意义不大)
+    'dot-notation': 0, // object操作要求使用点号 (意义不大)
+    'no-unused-vars': 0, // 禁止出现未使用过的变量（与typescript规则重复）
+    '@typescript-eslint/consistent-type-assertions': 1, // 强制规范类型定义的方式  --CUSTOM
+    '@typescript-eslint/explicit-function-return-type': 0, // 对返回类型不明确的函数必须声明类型
+    '@typescript-eslint/no-var-requires': 0, // 禁止var foo = require("foo"）用import代替
+    '@typescript-eslint/no-non-null-assertion': 0, // 禁止使用!的非null断言后缀运算符
+    '@typescript-eslint/no-use-before-define': 0, // 在定义变量和函数之前禁止使用
+    '@typescript-eslint/no-explicit-any': 0, // 禁止使用any类型
+    '@typescript-eslint/no-unnecessary-type-assertion': 0, // 禁止使用尖括号范型
+    '@typescript-eslint/no-inferrable-types': 0, // 不允许对初始化为数字，字符串或布尔值的变量或参数进行显式类型声明
+    '@typescript-eslint/no-this-alias': 1, // 禁止对this使用别名  --CUSTOM
+    '@typescript-eslint/no-namespace': 1, // 禁止使用自定义TypeScript模块和名称空间  --CUSTOM
+    '@typescript-eslint/no-unused-vars': [1, { vars: 'all', args: 'none', ignoreRestSiblings: true }], // 提示未使用的变量  --CUSTOM
+
+    // ============import插件=============
+    'import/named': 0, // 允许使用import { XType } from X 导出类型
+    'import/no-unresolved': 0, // 使用alias，关闭
+    'import/order': 1, // import引入按照一定顺序
+
+    // ============promise插件=============
+    'promise/always-return': 0, // promise.then必须return
+    'promise/catch-or-return': 0, // promise必须使用catch
+    'promise/no-callback-in-promise': 0, // promise.then中禁止使用回调函数
+    'promise/no-return-wrap': 1, // 避免在不需要时将值包在Promise.resolve或Promise.reject中  --CUSTOM
+  },
+  // 为.js文件设置覆盖规则
+  overrides: [
+    {
+      files: ['./**/*.js'],
+      excludedFiles: '*.spec.js',
+      rules: {
+        'no-var': 0,
+      },
+    },
+  ],
+}
